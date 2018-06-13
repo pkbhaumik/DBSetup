@@ -1,5 +1,6 @@
 package pb.ticket.service.dbsetup;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,8 +14,8 @@ public class TicketServiceDB {
 	private final String connectionString;
 
 	public TicketServiceDB(String databaseServer, String databaseName, String userName, String password) {
-		connectionString = String.format("jdbc:sqlserver://%s;databaseName=%s;user=%s;password=%s;Max Pool Size=50", databaseServer,
-				databaseName, userName, password);
+		connectionString = String.format("jdbc:sqlserver://%s;databaseName=%s;user=%s;password=%s;Max Pool Size=50",
+				databaseServer, databaseName, userName, password);
 	}
 
 	public void populateDatabase() {
@@ -37,7 +38,8 @@ public class TicketServiceDB {
 					System.out.println("SeatMap table is empty. Populating [SeatMap] table.");
 
 					// Get the stage information
-					try (ResultSet rs = sqlStmt.executeQuery("SELECT LevelId, TotalTows, SeatsInRow FROM [TS].[Stage] ORDER BY LevelId")) {
+					try (ResultSet rs = sqlStmt
+							.executeQuery("SELECT LevelId, TotalTows, SeatsInRow FROM [TS].[Stage] ORDER BY LevelId")) {
 
 						if (rs != null) {
 							while (rs.next()) {
@@ -76,7 +78,7 @@ public class TicketServiceDB {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		System.out.println("Done with Database setup.");
 
 	}
@@ -99,4 +101,15 @@ public class TicketServiceDB {
 		return sqlConnection;
 	}
 
+	public void releaseHold(Integer key) {
+		try (Connection sqlConnection = getSQLServerConnection(this.connectionString)) {
+			try (CallableStatement stmt = sqlConnection.prepareCall("{call ReleaseHold(?)}")) {
+				stmt.setInt(1, key);
+
+				stmt.executeUpdate();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

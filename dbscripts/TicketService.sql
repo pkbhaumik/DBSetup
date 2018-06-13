@@ -184,7 +184,7 @@ BEGIN
 	
 	COMMIT;
 	
-	SELECT SH.[SeatHoldId], SM.[SeatId], SM.[LevelId], SM.[RowNumber], SM.[SeatNumber]
+	SELECT SH.[SeatHoldId], SM.[SeatId], SM.[LevelId], SM.[RowNumber], SM.[SeatNumber], SH.[ExpiringAt]
 	FROM [TS].[SeatHold] SH 
 	JOIN [TS].[SeatMap] SM ON (SH.[SeatHoldId] = SM.[SeatHoldId])
 	WHERE SH.[SeatHoldId] = @seatHoldId;

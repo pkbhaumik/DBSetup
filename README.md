@@ -2,7 +2,7 @@
 
 Setup Database for Ticket Service REST API. 
 
-Release expired hold tickets (Not implemented yet)
+Release expired hold tickets
 
 ## Prequisite
 
@@ -13,6 +13,8 @@ SQL Express 2017 with SQL Server authentication enabled
 Eclipse
 
 Maven
+
+Apache Kafka 1.0.1 (Install Apache ZooKeeper And Apache Kafka)
 
 ## Setup
 
@@ -28,10 +30,10 @@ mvn package
 
 ## Run the program
 
-java -jar pb-ticket-db-service-jar-with-dependencies.jar {SQL_INSTANCE_NAME} {DATABASE_NAME} { USER_NAME} {PASSWORD}
+java -jar pb-ticket-db-service-jar-with-dependencies.jar {SQL_INSTANCE_NAME} {DATABASE_NAME} { USER_NAME} {PASSWORD} {KAFKA_BROKERS}
 
 e.g.
 
-java -jar pb-ticket-db-service-jar-with-dependencies.jar 127.0.0.1\SQLEXPRESS TicketService ticketservice Ticketservice123
+java -jar pb-ticket-db-service-jar-with-dependencies.jar 127.0.0.1\SQLEXPRESS TicketService ticketservice Ticketservice123 127.0.0.1:9092
 
 
