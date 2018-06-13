@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -33,8 +34,8 @@
 			<version>6.4.0.jre8</version>
 		</dependency>
 	</dependencies>
-		<build>
-		<finalName>Ticket-db-service</finalName>
+	<build>
+		<finalName>pb-ticket-db-service</finalName>
 		<plugins>
 
 			<!-- download source code in Eclipse, best practice -->
@@ -59,27 +60,32 @@
 				</configuration>
 			</plugin>
 
-			<!-- Maven Shade Plugin -->
+			<!-- Maven Assembly Plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.3</version>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4.1</version>
+				<configuration>
+					<!-- get all project dependencies -->
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<!-- MainClass in mainfest make a executable jar -->
+					<archive>
+						<manifest>
+							<mainClass>pb.ticket.service.dbsetup.MainApp</mainClass>
+						</manifest>
+					</archive>
+
+				</configuration>
 				<executions>
-					<!-- Run shade goal on package phase -->
 					<execution>
+						<id>make-assembly</id>
+						<!-- bind to the packaging phase -->
 						<phase>package</phase>
 						<goals>
-							<goal>shade</goal>
+							<goal>single</goal>
 						</goals>
-						<configuration>
-							<transformers>
-								<!-- add Main-Class to manifest file -->
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>pb.ticket.service.dbsetup.MainApp</mainClass>
-								</transformer>
-							</transformers>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
