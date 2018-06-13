@@ -1,4 +1,4 @@
-## Database Service (Partial)
+## Database Service
 
 Setup Database for Ticket Service REST API. 
 
